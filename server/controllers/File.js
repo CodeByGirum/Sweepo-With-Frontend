@@ -369,6 +369,7 @@ export const getIssue = async(req, res) => {
         status: true, 
         original_name: userFiles[0].original_name, 
         description: userFiles[0].description,
+        records: records.slice(0, 5), 
         dataItems: records.length,
         issueItems: fileIssues.length,
         distinctIssueRows: distinctRowIndexes,
