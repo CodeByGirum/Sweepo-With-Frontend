@@ -1,4 +1,4 @@
-import { additionMultipleColumn, additionToColumn, deleteColumn, divideMultipleColumn, divisionColumn, fillMissing, multiplicationColumn, multiplicationMultipleColumn, renameColumn, replaceColumnValues, replaceNegativeValues, replaceValue, roundColumn, sortRowsAscending, sortRowsDescending, substractionMultipleColumn, subtractionFromColumn } from "../Actions/columnActions.js";
+import { additionMultipleColumn, additionToColumn, deleteColumn, divideMultipleColumn, divisionColumn, fillMissing, multiplicationColumn, multiplicationMultipleColumn, renameColumn, replaceColumnValues, replaceNegativeValues, replaceValue, roundColumn, sortRowsAscending, sortRowsDescending, substractionMultipleColumn, subtractionFromColumn, transformText, standardizeTextFormat, replaceText, trimText, convertDataType, extractKeyword, generateUniqueId,tokenizeText, convertTextEncoding } from "../Actions/columnActions.js";
 import { fillWithAverage, fillWithMean, fillWithMedian, fillWithMode, fillWithRandom, fillWithUpperOrLowerRow, removeRowsWithAnyIssue, removeRowsWithColumnIssues, removeRowsWithIssues, removeRowsWithSpecificColumnIssue, removeRowsWithSpecificIssue, replaceIssueWithValue, updateDateIssues } from "../Actions/issuesActions.js";
 import { deleteDuplicateRow, deleteRowsWhereValueEquals, deleteRowsWhereValueGreaterThan, deleteRowsWhereValueLessThan, deleteRowsWhereValueNotInRange, deleteRowsWithNegativeValues, keepOnlyUniqueRows, limitRows, removeEmptyRows, removeRowsWithNulls, replaceRow } from "../Actions/rowActions.js";
 
@@ -20,7 +20,9 @@ export const manipulateData = (parsedData, actions, issues,schema) => {
     }
 
     actions.forEach(action => {
+    
         switch (action.type) {
+            
             case "DELETE_COLUMN":
                 deleteColumn(modifiedData,action);
                 break;
@@ -191,7 +193,42 @@ export const manipulateData = (parsedData, actions, issues,schema) => {
             case "CHANGE_SEPARATOR":
                 updateDateIssues(modifiedData, issuesMap, action,schema)
                 break;
-                    
+
+            case "TRANSFORM_TEXT":
+                transformText(modifiedData, action)
+                    break;
+
+            case "STANDARDIZE_TEXT_FORMAT":
+                standardizeTextFormat(modifiedData, action)
+                    break;
+
+            case "REPLACE_TEXT":
+                replaceText(modifiedData, action)
+                    break;
+
+            case "TRIM_TEXT":
+                trimText(modifiedData, action)
+                    break;
+
+            case "CONVERT_DATA_TYPES":
+                convertDataType(modifiedData, action)
+                break;
+
+            case "EXTRACT_KEYWORDS":
+                extractKeyword(modifiedData, action)
+                break;
+
+            case "GENERATE_UNIQUE_ID":
+                generateUniqueId(modifiedData, action)
+                break;
+
+            case "TOKENIZE_TEXT":
+                tokenizeText(modifiedData, action)
+                break;
+
+            case "CONVERT_TEXT_ENCODING":
+                convertTextEncoding(modifiedData, action)
+                break;
 
             default:
                 console.warn(`Unknown action: ${action.type}`);

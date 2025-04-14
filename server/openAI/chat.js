@@ -53,6 +53,15 @@ export const messages = async (userInput, schema, issues) => {
   - DIVIDE_MULTIPLE_COLUMN: { type: "DIVIDE_MULTIPLE_COLUMN", targetColumn: "<targetedColumnsArray>", update: "<changedColumn>" }
   - CHANGE_SEPARATOR: { type: "CHANGE_SEPARATOR", issueType: "INVALID_SEPARATOR", column:"<ColumnName>", newSeparator:"<DateSeparator>" }
   - CHANGE_DATE_FORMAT: { type: "CHANGE_DATE_FORMAT", issueType: "INVALID_FORMAT", column:"<ColumnName>", newFormat:"<DateFormat>"  }
+  - TRANSFORM_TEXT: { type: "TRANSFORM_TEXT", column:"<ColumnName>", transform:"<TextTransform>" }
+  - STANDARDIZE_TEXT_FORMAT or NORMALIZE or remove unnecessary white space or remove special characters: { type: "STANDARDIZE_TEXT_FORMAT", column:"<ColumnName>" }
+  - TRIM_TEXT: { type: "TRIM_TEXT", column:"<ColumnName>" }
+  - REPLACE_TEXT: { type: "REPLACE_TEXT", column:"<ColumnName>", findText:"<TextToFind>", replaceText:"<TextToReplace>" }
+  - CONVERT_DATA_TYPES: { type: "CONVERT_DATA_TYPES", column:"<ColumnName>", dataType:"<DataType>"}
+  - EXTRACT_KEYWORDS: { type: "EXTRACT_KEYWORDS", column:"<ColumnName>", extractWord:"<ExtractWord>"} }
+  - GENERATE_UNIQUE_ID: { type: "GENERATE_UNIQUE_ID", columnName:"<ColumnName>", idType:"<IDType>"} }
+  - TOKENIZE_TEXT: { type: "TOKENIZE_TEXT", column:"<ColumnName>""} }
+  - CONVERT_TEXT_ENCODING: { type: "CONVERT_TEXT_ENCODING", column:"<ColumnName>", encoding: "<TargetEncoding>" }
 
   Your task is to generate an array of structured actions based on the provided schema. 
 
@@ -162,7 +171,16 @@ export const response_format = {
                   "MULTIPLICATION_MULTIPLE_COLUMN",
                   "DIVIDE_MULTIPLE_COLUMN",
                   "CHANGE_SEPARATOR",
-                  "CHANGE_DATE_FORMAT"
+                  "CHANGE_DATE_FORMAT",
+                  "TRANSFORM_TEXT",
+                  "STANDARDIZE_TEXT_FORMAT",
+                  "REPLACE_TEXT",
+                  "TRIM_TEXT",
+                  "CONVERT_DATA_TYPES",
+                  "EXTRACT_KEYWORDS",
+                  "GENERATE_UNIQUE_ID",
+                  "TOKENIZE_TEXT",
+                  "CONVERT_TEXT_ENCODING"
                 ] 
               },
               column: { type: "string", nullable: true },
@@ -178,7 +196,15 @@ export const response_format = {
               count: { type: "number", nullable: true },
               title: { type: "string" },
               response: { type: "string" },
-              newFormat: {type: "string", enum:["YYYY/MM/DD", "DD/MM/YYYY", "MM/DD/YYYY","YYYY-MM-DD", "DD-MM-YYYY", "MM-DD-YYYY"]}
+              findText: { type: "string" },
+              replaceText: { type: "string" },
+              newFormat: {type: "string", enum:["YYYY/MM/DD", "DD/MM/YYYY", "MM/DD/YYYY","YYYY-MM-DD", "DD-MM-YYYY", "MM-DD-YYYY"]},
+              transform: {type: "string", enum:["UPPERCASE", "LOWERCASE", "CAPITALIZE"]},
+              dataType: {type: "string", enum:["STRING", "NUMBER", "DATE", "BOOLEAN"]},
+              extractWord: {type: "string"},
+              columnName: {type: "string"},
+              idType: {type: "string", enum:["UUID", "AUTOINCREMENT"]},
+              encoding: {type: "string", enum:["UTF-8", "ASCII", "ISO-8859-1"]},
               // targetColumn: { type: "array", items: { type: "string" }, nullable: true },
               // update: { type: "string", nullable: true },
               // by: { type: "string", nullable: true },

@@ -1,5 +1,5 @@
 import { queryDb } from "../DB_methods/query.js";
-import { manipulateData } from "../utils/manipulateData .js";
+import { manipulateData } from "../utils/manipulateData.js";
 import { ParseS3File } from "../utils/ParseS3File.js";
 import { 
     frequency_penalty, 
