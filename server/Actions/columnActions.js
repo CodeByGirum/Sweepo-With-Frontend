@@ -425,13 +425,6 @@ export const tokenizeText = (modifiedData, action) => {
 
 import iconv from 'iconv-lite';
 
-/**
- * Converts the text encoding of a specific column in the dataset.
- * 
- * @param {Array<Object>} modifiedData - Array of objects representing the data.
- * @param {Object} action - Action object containing column, encoding, and other metadata.
- * @returns {Array<Object>} - New data array with encoding applied to the specified column.
- */
 export function convertTextEncoding(modifiedData, action) {
   const { column, encoding } = action;
 
@@ -452,3 +445,49 @@ export function convertTextEncoding(modifiedData, action) {
     return row;
   });
 }
+
+export const removeSpecialCharacters = (modifiedData, action) => {
+    const { column, character } = action;
+  
+    if (!column || character === undefined) return modifiedData;
+  
+    const escapedChar = character.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&'); // safely escape special characters
+    const regex = new RegExp(escapedChar, 'g');
+  
+    return modifiedData.map(row => {
+      const value = row[column];
+  
+      if (typeof value === 'string') {
+        row[column] = value.replace(regex, '');
+      } else if (typeof value === 'number') {
+        const cleaned = String(value).replace(regex, '');
+        const parsed = Number(cleaned);
+        row[column] = isNaN(parsed) ? value : parsed;
+      }
+  
+      return row;
+    });
+};
+
+export const removeAllSpecialCharacters = (modifiedData, action) => {
+    const { column } = action;
+  
+    if (!column) return modifiedData;
+  
+    // Regex: Keep letters, numbers, whitespace, and dots (you can tweak it)
+    const regex = /[^a-zA-Z0-9.\s]/g;
+  
+    return modifiedData.map(row => {
+      const value = row[column];
+  
+      if (typeof value === 'string') {
+        row[column] = value.replace(regex, '');
+      } else if (typeof value === 'number') {
+        const cleaned = String(value).replace(regex, '');
+        const parsed = Number(cleaned);
+        row[column] = isNaN(parsed) ? value : parsed;
+      }
+  
+      return row;
+    });
+};

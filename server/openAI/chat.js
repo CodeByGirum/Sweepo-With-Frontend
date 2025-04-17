@@ -62,6 +62,13 @@ export const messages = async (userInput, schema, issues) => {
   - GENERATE_UNIQUE_ID: { type: "GENERATE_UNIQUE_ID", columnName:"<ColumnName>", idType:"<IDType>"} }
   - TOKENIZE_TEXT: { type: "TOKENIZE_TEXT", column:"<ColumnName>""} }
   - CONVERT_TEXT_ENCODING: { type: "CONVERT_TEXT_ENCODING", column:"<ColumnName>", encoding: "<TargetEncoding>" }
+  - REMOVE_SPECIAL_CHARACTERS: { type: "REMOVE_SPECIAL_CHARACTERS", column:"<ColumnName>", character:"<SpecialCharacter>", title:"<Title>", response:"<Response>" }
+
+  - REMOVE_ALL_SPECIAL_CHARACTERS: { type: "REMOVE_ALL_SPECIAL_CHARACTERS", column:"<ColumnName>", title:"<Title>", response:"<Response>" }
+
+  REMOVE_SPECIAL_CHARACTERS is a special case where the character to be removed is specified. The character should be one of the following: "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", "|", ";", ":", "'", "\"", "<", ">", ",", ".", "?", '/', ',' '~'.
+
+  REMOVE_ALL_SPECIAL_CHARACTERS is a special case where all special characters are removed from the text. This includes all characters that are not alphanumeric (letters and numbers). Note that this action does not require a specific character to be specified. use this if specific character is not mentioned.
 
   Your task is to generate an array of structured actions based on the provided schema. 
 
@@ -180,7 +187,9 @@ export const response_format = {
                   "EXTRACT_KEYWORDS",
                   "GENERATE_UNIQUE_ID",
                   "TOKENIZE_TEXT",
-                  "CONVERT_TEXT_ENCODING"
+                  "CONVERT_TEXT_ENCODING",
+                  "REMOVE_SPECIAL_CHARACTERS",
+                  "REMOVE_ALL_SPECIAL_CHARACTERS"
                 ] 
               },
               column: { type: "string", nullable: true },
@@ -205,6 +214,7 @@ export const response_format = {
               columnName: {type: "string"},
               idType: {type: "string", enum:["UUID", "AUTOINCREMENT"]},
               encoding: {type: "string", enum:["UTF-8", "ASCII", "ISO-8859-1"]},
+              character: {type: "string", enum:["@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", "|", ";", ":", "'", "\"", "<", ">", ",", ".", "?", "/", "`", "~"]},
               // targetColumn: { type: "array", items: { type: "string" }, nullable: true },
               // update: { type: "string", nullable: true },
               // by: { type: "string", nullable: true },
