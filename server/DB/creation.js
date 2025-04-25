@@ -59,7 +59,7 @@ export const actionsTable = async (pool) => {
             file_id CHAR(36) NOT NULL,                        
             user_id CHAR(36) NOT NULL,
             title VARCHAR(255) NOT NULL,
-            response VARCHAR(255) NOT NULL,
+            response MEDIUMTEXT NOT NULL,
             action_type VARCHAR(255) NOT NULL,
             chat VARCHAR(255) NOT NULL,               
             action_details JSON,                             

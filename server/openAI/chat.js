@@ -1,4 +1,5 @@
 // , contextDesc
+// A concise response for the user.
 export const messages = async (userInput, schema, issues) => {
   const systemPrompt = `
   You are a data transformation assistant. The user will provide a natural language command related to modifying a dataset.
@@ -11,6 +12,7 @@ export const messages = async (userInput, schema, issues) => {
 
   The response should always be an array of objects with the following action types:
   - DELETE_COLUMN: { type: "DELETE_COLUMN", column: "<ColumnName>" }
+  - DELETE_ROWS_WITH_NULLS: { type: "DELETE_ROWS_WITH_NULLS", column: "<ColumnName>" }
   - FILL_MISSING: { type: "FILL_MISSING", column: "<ColumnName>", defaultValue: <DefaultValue> }
   - REMOVE_ROWS_WITH_ISSUES: { type: "REMOVE_ROWS_WITH_ISSUES", issueType: "<IssueType>" }
   - REPLACE_NEGATIVE_VALUES: { type: "REPLACE_NEGATIVE_VALUES", column: "<ColumnName>", newValue: <NewValue> }
@@ -28,7 +30,6 @@ export const messages = async (userInput, schema, issues) => {
   - SORT_ROWS_DESCENDING: { type: "SORT_ROWS_DESCENDING", column: "<ColumnName>" }
   - LIMIT_ROWS: { type: "LIMIT_ROWS", count: <Count> }
   - REMOVE_EMPTY_ROWS: { type: "REMOVE_EMPTY_ROWS" }
-  - REMOVE_ROWS_WITH_NULLS: { type: "REMOVE_ROWS_WITH_NULLS" }
   - REMOVE_ROWS_WITH_ANY_ISSUE: { type: "REMOVE_ROWS_WITH_ANY_ISSUE" }
   - REMOVE_ROWS_WITH_SPECIFIC_ISSUE: { type: "REMOVE_ROWS_WITH_SPECIFIC_ISSUE", issueType: "<IssueType>" }
   - REMOVE_ROWS_WITH_COLUMN_ISSUES: { type: "REMOVE_ROWS_WITH_COLUMN_ISSUES", column: "<ColumnName>" }
@@ -76,7 +77,7 @@ export const messages = async (userInput, schema, issues) => {
   - type: The action type (e.g., "DELETE_COLUMN", "FILL_MISSING"). 
   - column: The affected column name (if applicable).
   - title: A short summary of the action performed. Ensure only one title field is present for valid response title is must.
-  - response: A concise response for the user.
+  - response: Elaborate widely in deep and detail even more the action completed for the user. If possible male it more user friendly and easy to understand. If possible make it morethan 200 characters.
   - for number never include quotes for value
 
 
@@ -149,17 +150,17 @@ export const response_format = {
                   "DELETE_ROWS_WITH_NEGATIVE_VALUES",
                   "DELETE_ROWS_WHERE_VALUE_NOT_IN_RANGE",
                   "DELETE_DUPLICATE_ROWS",
+                  "DELETE_ROWS_WITH_NULLS",
                   "KEEP_ONLY_UNIQUE_ROWS",
                   "SORT_ROWS_ASCENDING",
                   "SORT_ROWS_DESCENDING",
                   "LIMIT_ROWS",
-                  "REMOVE_EMPTY_ROWS",
-                  "REMOVE_ROWS_WITH_NULLS",
-                  "REMOVE_ROWS_WITH_ANY_ISSUE", 
-                  "REMOVE_ROWS_WITH_SPECIFIC_ISSUE", 
-                  "REMOVE_ROWS_WITH_COLUMN_ISSUES", 
-                  "REMOVE_ROWS_WITH_SPECIFIC_COLUMN_ISSUE",
-                  "REPLACE_ISSUE_WITH_VALUE", 
+                  // "REMOVE_EMPTY_ROWS",
+                  // "REMOVE_ROWS_WITH_ANY_ISSUE", 
+                  // "REMOVE_ROWS_WITH_SPECIFIC_ISSUE", 
+                  // "REMOVE_ROWS_WITH_COLUMN_ISSUES", 
+                  // "REMOVE_ROWS_WITH_SPECIFIC_COLUMN_ISSUE",
+                  // "REPLACE_ISSUE_WITH_VALUE", 
                   "FILL_WITH_AVERAGE",
                   "FILL_WITH_MEAN", 
                   "FILL_WITH_MODE",

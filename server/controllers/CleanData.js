@@ -123,6 +123,8 @@ export const CleanData = async (req, res) => {
                     [fileId, userId, JSON.stringify(action)]
                 );
         
+                console.log("Existing action: ",action.response);
+                
                 if (existingAction.length === 0) {
                     await queryDb(
                         `INSERT INTO actions (file_id, user_id, title, response, chat, action_type, action_details) VALUES (?, ?, ?, ?, ?, ?, ?)`,

@@ -1,4 +1,4 @@
-import { additionMultipleColumn, additionToColumn, deleteColumn, divideMultipleColumn, divisionColumn, fillMissing, multiplicationColumn, multiplicationMultipleColumn, renameColumn, replaceColumnValues, replaceNegativeValues, replaceValue, roundColumn, sortRowsAscending, sortRowsDescending, substractionMultipleColumn, subtractionFromColumn, transformText, standardizeTextFormat, replaceText, trimText, convertDataType, extractKeyword, generateUniqueId,tokenizeText, convertTextEncoding, removeSpecialCharacters, removeAllSpecialCharacters } from "../Actions/columnActions.js";
+import { additionMultipleColumn, additionToColumn, deleteColumn, divideMultipleColumn, divisionColumn, fillMissing, multiplicationColumn, multiplicationMultipleColumn, renameColumn, replaceColumnValues, replaceNegativeValues, replaceValue, roundColumn, sortRowsAscending, sortRowsDescending, substractionMultipleColumn, subtractionFromColumn, transformText, standardizeTextFormat, replaceText, trimText, convertDataType, extractKeyword, generateUniqueId,tokenizeText, convertTextEncoding, removeSpecialCharacters, removeAllSpecialCharacters, deleteRowsWithNulls } from "../Actions/columnActions.js";
 import { fillWithAverage, fillWithMean, fillWithMedian, fillWithMode, fillWithRandom, fillWithUpperOrLowerRow, removeRowsWithAnyIssue, removeRowsWithColumnIssues, removeRowsWithIssues, removeRowsWithSpecificColumnIssue, removeRowsWithSpecificIssue, replaceIssueWithValue, updateDateIssues } from "../Actions/issuesActions.js";
 import { deleteDuplicateRow, deleteRowsWhereValueEquals, deleteRowsWhereValueGreaterThan, deleteRowsWhereValueLessThan, deleteRowsWhereValueNotInRange, deleteRowsWithNegativeValues, keepOnlyUniqueRows, limitRows, removeEmptyRows, removeRowsWithNulls, replaceRow } from "../Actions/rowActions.js";
 
@@ -95,9 +95,9 @@ export const manipulateData = (parsedData, actions, issues,schema) => {
                 removeEmptyRows(modifiedData)
                 break;
 
-            case "REMOVE_ROWS_WITH_NULLS":
-                removeRowsWithNulls(modifiedData)
-                break;
+            // case "REMOVE_ROWS_WITH_NULLS":
+            //     removeRowsWithNulls(modifiedData)
+            //     break;
 
             case "REMOVE_ROWS_WITH_ANY_ISSUE":
                 removeRowsWithAnyIssue(modifiedData, issuesMap)
@@ -237,6 +237,10 @@ export const manipulateData = (parsedData, actions, issues,schema) => {
 
             case "REMOVE_ALL_SPECIAL_CHARACTERS":
                 removeAllSpecialCharacters(modifiedData, action)
+                break;
+
+            case "DELETE_ROWS_WITH_NULLS":
+                modifiedData = deleteRowsWithNulls(modifiedData, action)
                 break;
 
             default:

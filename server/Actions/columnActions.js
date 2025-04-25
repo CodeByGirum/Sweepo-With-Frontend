@@ -491,3 +491,16 @@ export const removeAllSpecialCharacters = (modifiedData, action) => {
       return row;
     });
 };
+
+export const deleteRowsWithNulls = (modifiedData, action) => {
+
+    modifiedData = modifiedData.filter(record => {
+        const value = record[action.column];
+        
+        if (value) {
+            return value;
+        }
+    });
+
+    return modifiedData;
+};
