@@ -50,7 +50,7 @@ export const CleanData = async (req, res) => {
     let records;
     let issues;
     let aiResponse;
-    
+    let aiSummary;
     if (typeof parsedData === "object" && !Array.isArray(parsedData)) {
         // Excel case: Extract the first sheet
         const sheetName = Object.keys(parsedData)[0]; 
@@ -113,6 +113,8 @@ export const CleanData = async (req, res) => {
 
         // Extract actions
         aiResponse = parsedResponse?.actions;
+        aiSummary = parsedResponse?.summary;
+
         console.log("Before AI actions inserted successfully. ",aiResponse);
 
         if ((aiResponse && aiResponse.length > 0 && aiResponse[0].title && aiResponse[0].title !== "")) {
@@ -127,13 +129,15 @@ export const CleanData = async (req, res) => {
                 
                 if (existingAction.length === 0) {
                     await queryDb(
-                        `INSERT INTO actions (file_id, user_id, title, response, chat, action_type, action_details) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                        [fileId, userId, action.title, action.response, chat, action.type, JSON.stringify(action)]
+                        `INSERT INTO actions (file_id, user_id, title, response, summary, chat, action_type, action_details) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                        [fileId, userId, action.title, action.response, aiSummary, chat, action.type, JSON.stringify(action)]
                     );
                 }
             }
         
             console.log("AI actions inserted successfully. ",aiResponse);
+            console.log("AI summary inserted successfully. ",aiSummary);
+            
         }else{
 
             return res.status(200).json({ 

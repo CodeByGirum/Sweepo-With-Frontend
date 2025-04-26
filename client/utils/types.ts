@@ -58,6 +58,7 @@ export interface Action<T = unknown> {
   user_id: string;
   title: string;
   response: string;
+  summary: string;
   action_type: string;
   chat: string;
   action_details: T; 

@@ -49,18 +49,18 @@ const CleanDataMainHeader = () => {
     }
     
   return (
-    <header className='flex justify-between items-center sectionBg p-1 px-5 w-full h-10 border-b border-gray-300'>
-        <button className="p-2 rounded-lg max-w-[80%] bg-secondary text-secondary-foreground text-nowrap text-sm text-bold mr-5 hover:underline" onClick={handleAllUndo}>
+    <header className='flex justify-between items-center bg-black p-1 px-5 w-full h-10 border-b border-gray-300'>
+        <button className="p-2 rounded-lg max-w-[80%] bg-[#1E1E1E] text-secondary-foreground text-nowrap text-sm text-bold mr-5 hover:underline" onClick={handleAllUndo}>
             Undo All&nbsp;({actions.length})
         </button>
-        <div className="flex flex-nowrap w-full gap-2 hover:overflow-x-auto custom-scrollbar">
+        <div className="flex flex-nowrap w-full gap-2 hover:overflow-x-auto custom-scrollbar bg-black p-1">
         {
             actions?.length > 0 ? sortedActions.map((action, index) => (
                 <div className="flex gap-1"  key={index}>
                     <div
                         className={`p-1 rounded-lg flex items-center gap-1 text-nowrap text-sm w-auto ${
                             action.chat !== null 
-                                ? "ml-auto bg-primary text-primary-foreground"
+                                ? "bg-[#1E1E1E] text-secondary-foreground"
                                 : "mr-auto bg-secondary text-secondary-foreground"
                         }`}
                     >

@@ -20,13 +20,26 @@ interface UserContextType {
     records: RecordType[];
     issues: Issue[];
     actions: Action[];
+    summary: Action[];
     schema: Schema;
     insertMessage: (message: string) => void;
     isCleanDataLoading:boolean;
     refreshWorkstation:boolean;
     selectedRow:number;
     setSelectedRow:React.Dispatch<React.SetStateAction<number>>;
+    
 }
+
+const getUniqueChatActions = (actions: Action[]) => {
+    const seen = new Set();
+    return actions.filter(action => {
+      if (seen.has(action.chat)) return false;
+      seen.add(action.chat);
+      return true;
+    });
+  };
+  
+  
 
 const UserContext = createContext<UserContextType | null>(null);
 
@@ -37,6 +50,7 @@ const ContextAPI: React.FC<{children:React.ReactNode}> = ({children}) => {
     const [records, setRecords] = useState<RecordType[]>([]);
     const [issues, setIssues] = useState<Issue[]>([]);
     const [actions, setActions] = useState<Action[]>([]);
+    const [summary, setSummary] = useState<Action[]>([]);
     const [chat, setChat] = useState<string>("");
     const [responseWarning, setResponseWarning] = useState<string>("");
     const [cleanDataFileId, setCleanDataFileId] = useState<string>("");
@@ -78,7 +92,11 @@ const ContextAPI: React.FC<{children:React.ReactNode}> = ({children}) => {
                 
                 if(success){
                     const {actions, issues, records, schema} = data;
+                    const distinctActions = getUniqueChatActions(actions);
+                    console.log("distinctActions", distinctActions);
+                    
                     setActions(actions);
+                    setSummary(distinctActions);
                     setIssues(issues);
                     setRecords(records);
                     setSchema(schema);
@@ -108,7 +126,7 @@ const ContextAPI: React.FC<{children:React.ReactNode}> = ({children}) => {
 
 
     return (
-        <UserContext.Provider value={{user, setUser, expand, setExpand, chat, setChat, schema, actions, records, issues, insertMessage, setCleanDataFileId, cleanDataFileId, isCleanDataLoading,setRefreshWorkstation, refreshWorkstation, selectedRow, setSelectedRow,responseWarning,setResponseWarning}}>
+        <UserContext.Provider value={{user, setUser, expand, setExpand, chat, setChat, schema, actions, records, issues, insertMessage, setCleanDataFileId, cleanDataFileId, isCleanDataLoading,setRefreshWorkstation, refreshWorkstation, selectedRow, setSelectedRow,responseWarning,setResponseWarning, summary}}>
             {children}
         </UserContext.Provider>
     )

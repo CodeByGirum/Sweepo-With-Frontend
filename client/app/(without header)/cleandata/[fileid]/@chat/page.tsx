@@ -69,7 +69,7 @@ import ChatLoader from "@/components/workstationUi/ChatLoader";
 
 const Chat = () => {
     const [input, setInput] = useState("");
-    const { insertMessage, chat, isCleanDataLoading, actions, responseWarning } = useGlobalContext();
+    const { insertMessage, chat, isCleanDataLoading, summary, responseWarning } = useGlobalContext();
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const scrollAreaRef = useRef<HTMLDivElement>(null); 
   
@@ -89,14 +89,14 @@ const Chat = () => {
         <CardContent className="h-full overflow-hidden border-none mt-4 relative">
           <ScrollArea className="w-full h-full" ref={scrollAreaRef}> {/* 👈 Set the ref */}
             <div className="space-y-2">
-              {actions?.length > 0 ? (
-                actions.map((action, index) => (
+              {summary?.length > 0 ? (
+                summary.map((action, index) => (
                   <ChatMessage
                     key={index}
                     action={action}
                     setInput={setInput}
                     scrollAreaRef={scrollAreaRef} 
-                    shouldAnimate={index === actions.length - 1}
+                    shouldAnimate={index === summary.length - 1}
                   />
                 ))
               ) : (

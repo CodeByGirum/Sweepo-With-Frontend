@@ -106,14 +106,14 @@ import { FC } from "react";
 
 
 type ChatMessageProps = {
-    action: { chat: string; response: string };
+    action: { chat: string; response: string, summary: string };
     setInput: (value: string) => void;
     scrollAreaRef?: React.RefObject<HTMLDivElement | null>;
     shouldAnimate?: boolean;
   };
   
   const ChatMessage: FC<ChatMessageProps> = ({ action, setInput, scrollAreaRef, shouldAnimate }) => {
-    const [typedText, setTypedText] = useState(shouldAnimate ? "" : action.response);
+    const [typedText, setTypedText] = useState(shouldAnimate ? "" : action.summary);
     const indexRef = useRef(0);
     const animationRef = useRef<number | null>(null);
   
@@ -123,8 +123,8 @@ type ChatMessageProps = {
       indexRef.current = 0;
   
       const type = () => {
-        if (indexRef.current <= action.response.length) {
-          setTypedText(action.response.slice(0, indexRef.current));
+        if (indexRef.current <= action.summary.length) {
+          setTypedText(action.summary.slice(0, indexRef.current));
           indexRef.current++;
   
           // ✅ Scroll the outer container
@@ -141,7 +141,7 @@ type ChatMessageProps = {
       return () => {
         if (animationRef.current) cancelAnimationFrame(animationRef.current);
       };
-    }, [action.response, shouldAnimate]);
+    }, [action.summary, shouldAnimate]);
   
     return (
       <div className="flex flex-col gap-1">
@@ -152,13 +152,13 @@ type ChatMessageProps = {
           >
             <Edit />
           </span>
-          <div className="p-1 rounded-lg flex items-center break-all text-sm w-auto bg-primary text-primary-foreground">
+          <div className="p-1 rounded-lg flex items-center break-all text-sm w-auto bg-[#1E1E1E] text-secondary-foreground">
             {action.chat}
           </div>
         </div>
   
         <div
-          className="p-2 rounded-lg text-sm bg-secondary text-secondary-foreground w-full max-w-[90%] mr-auto break-words whitespace-pre-wrap"
+          className="p-2 rounded-lg text-sm text-secondary-foreground w-full max-w-[90%] mr-auto break-words whitespace-pre-wrap"
         >
           {typedText}
         </div>

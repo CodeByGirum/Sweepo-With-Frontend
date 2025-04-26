@@ -78,6 +78,9 @@ export const messages = async (userInput, schema, issues) => {
   - column: The affected column name (if applicable).
   - title: A short summary of the action performed. Ensure only one title field is present for valid response title is must.
   - response: Elaborate widely in deep and detail even more the action completed for the user. If possible male it more user friendly and easy to understand. If possible make it morethan 200 characters.
+  - summary: Do not include this in each action. The summary must be provided **once**, separated from the list of actions. It should describe the overall effect of the actions generated in response to the user input. The summary should not be tied to a single action, but to the totality of changes the user asked for. Ensure it is present once and only once at the end of the entire response object.
+  - If user uses greetings or something like starting communications, suggest the user that what he will do with the data and what you can do for him without creating any type.
+
   - for number never include quotes for value
 
 
@@ -94,6 +97,7 @@ export const messages = async (userInput, schema, issues) => {
     10. the user may mention a number of decimal places (like "round to 2 decimal places"). Extract this value dynamically.
     11. When the user specifies the decimal places, use this value in the response (e.g., by: 2 for "round to 2 decimal places").
 
+    If user send greetings or something like starting communications, suggest the user that what he will do with the data and what you can do for him.
 
     List of acceptable issue types:
   - "NULL_VALUE", "DUPLICATE_VALUE", "TYPE_MISMATCH", "INVALID_VALUE", "INVALID_FORMAT", "INVALID_SEPARATOR", "INVALID_DATE".
@@ -223,9 +227,12 @@ export const response_format = {
               // to: { type: "string", nullable: true }
             }
           }
+        },
+        summary: {
+          type: "string"
         }
       },
-      required: ["actions"],
+      required: ["actions", "summary"],
       additionalProperties: false
     }
   }
