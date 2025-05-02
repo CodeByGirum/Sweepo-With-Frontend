@@ -1,5 +1,19 @@
+/**
+ * Progress Component
+ * Purpose: Displays progress bar with percentage
+ * Used in: Project status, task completion
+ * Features:
+ * - Visual progress bar
+ * - Percentage display
+ * - Responsive design
+ */
+
 import React from 'react'
 
+/**
+ * Progress bar component
+ * @param progress - Progress percentage (0-100)
+ */
 const Progress = ({progress}:{progress:number}) => {
     const progressNumber = Number(progress);
 

@@ -1,143 +1,424 @@
+/**
+ * Registration Page Component
+ * Purpose: Handles new user registration and account creation
+ * Used in: Authentication flow
+ * Features:
+ * - Form validation
+ * - Password visibility toggle
+ * - Terms agreement
+ * - Error handling
+ * - Animated transitions
+ * - Responsive design
+ */
+
 'use client'
 
+import { useState, useEffect } from "react"
+import Link from "next/link"
 import Image from "next/image"
-import Link from "next/link";
-import { useState } from "react";
-import { useFormState } from "react-dom";
-import { FaEye } from "react-icons/fa";
-import { startTransition } from "react";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
+import { motion } from "framer-motion"
+import { AdvancedPageTransition } from "@/components/advanced-page-transition"
+import { useTransition } from "@/components/transition-provider"
+import { useActionState } from "react"
+import { startTransition } from "react"
+import { createUser } from "@/utils/authActions"
+import { getRandomBackgroundImage } from "@/utils/imageUtils"
 
-// actions
-import { createUser } from "@/utils/authActions";
-
-
+/**
+ * Initial State Configuration
+ * @type {Object}
+ * Defines the initial state for the registration form
+ * @property {string | null} message - Status message
+ * @property {Object} errors - Validation errors by field
+ */
 const initialState: { message: string | null; errors?: Record<string, string[] | undefined> } = {
     message: null,
     errors: {},
 };
 
-const Register = () => {
-    const [clearValue, setClearValue] = useState({firstName:'',lastName:'',email:'', password:'', confirmPassword:''});
-    const [togglePassword, setTogglePassword] = useState<boolean>(false);
-    const [toggleConfirmPassword, setToggleConfirmPasword] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [state,formAction] = useFormState(createUser,initialState)
+/**
+ * Registration Page Component
+ * @returns {JSX.Element} The registration page structure
+ * 
+ * @description
+ * Renders the registration interface with the following features:
+ * - Form validation and submission
+ * - Password visibility toggles
+ * - Terms and conditions agreement
+ * - Error message display
+ * - Loading state handling
+ * - Animated transitions
+ * - Background image management
+ * 
+ * State Management:
+ * - Form field states
+ * - Validation states
+ * - UI states (password visibility)
+ * - Loading states
+ * - Terms agreement
+ * 
+ * Effects:
+ * - Background image initialization
+ * - Form reset after submission
+ */
+export default function Register() {
+  // Hooks and state initialization
+  const { transitionType, transitionDuration } = useTransition()
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [agreeTerms, setAgreeTerms] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [state, formAction] = useActionState(createUser, initialState)
+  const [backgroundImage, setBackgroundImage] = useState<string>("")
 
-  const handleSubmit = async (e:React.FormEvent<HTMLElement>) => {
-    e.preventDefault();
-    setLoading(true);
+  // Initialize background image on mount
+  useEffect(() => {
+    setBackgroundImage(getRandomBackgroundImage());
+  }, []);
+
+  /**
+   * Form submission handler
+   * @param {React.FormEvent} e - Form event
+   * Processes form submission and user creation
+   * - Prevents default form submission
+   * - Sets loading state
+   * - Creates FormData from form
+   * - Submits data to server
+   * - Resets form on completion
+   */
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
     const formData = new FormData(e.currentTarget as HTMLFormElement)
+    
     startTransition(() => {
-        formAction(formData);
-        setLoading(false);
-        setClearValue({firstName:'',lastName:'',email:'', password:'', confirmPassword:''});
-    });
+      formAction(formData)
+      setLoading(false)
+      // Reset form fields after submission
+      setFirstName("")
+      setLastName("")
+      setEmail("")
+      setPassword("")
+      setConfirmPassword("")
+    })
+  }
 
-    }
+  /**
+   * Animation Configurations
+   * Define motion variants for form and item animations
+   */
+  const formVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  }
 
   return (
-    <div className="grid grid-cols-7 gap-8 mx-5 md:gap-12 max-w-screen h-auto mb-20">
-        <form onSubmit={handleSubmit} action={formAction} method='POST' className="col-span-7 mx-auto w-full sm:w-11/12 sm:max-w-xl mt-8 sm:mt-16 sm:col-span-4">
-            <h1 className="heading text-2xl font-bold">Sweepo!</h1>
-            <p className="para mb-5 mt-2">Create a new account.</p>
-            
-            {(state?.message) && <>
-                <div className="flex gap-2">
-                    <p className="success-message text-green-500 mb-4 font-bold">
-                        {state?.message}
-                    </p>
-                    <Link href={"/login"} className="heading underline cursor-pointer font-bold text-xs">Login here</Link>
-                </div>
-            </>}
-            {(state?.errors?.root) && <>
-                <div className="flex gap-2">
-                    <p className="error-message font-bold mb-4 text-sm">
-                        {state?.errors?.root}
-                    </p>
-                </div>
-            </>}
-            <div className="flex flex-col mb-5">
-                <label className="label" htmlFor="firstName">First Name <span className="asterik">*</span></label>
-                <input type="text" name="firstName" className="input value w-full mt-2" id="firstName" placeholder="First Name" required value={clearValue.firstName} onChange={(e)=>setClearValue({ ...clearValue, firstName: e.target.value })}/>
-                {state.errors && state.errors.firstName && (
-                    <p className="error-message">{state.errors.firstName}</p>
-                )}
+    <AdvancedPageTransition type={transitionType} duration={transitionDuration}>
+      <div className="flex min-h-screen bg-[#121212] text-white">
+        {/* Background Image Section
+         * Left side of the screen on larger displays
+         * - Animated entrance
+         * - Gradient overlay
+         * - Marketing content
+         * - Dynamic background
+         */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="hidden lg:block lg:w-1/2 bg-[#1a1a1a] relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#121212]/90 to-[#121212]/50 z-10"></div>
+          <div className="absolute inset-0 flex items-center justify-center p-8 z-20">
+            <div className="max-w-lg text-center">
+              <h2 className="text-2xl font-medium mb-4">Join the Data Revolution</h2>
+              <p className="text-gray-300 mb-6">
+                Create an account to start cleaning and analyzing your data with powerful AI-assisted tools.
+              </p>
+              <p className="text-gray-300 mb-6">
+                Sweepo empowers you to offer cutting-edge AI-driven analytics and predictive modeling as part of your service offerings.
+              </p>
+              <div className="flex justify-center space-x-3">
+                <div className="w-2 h-2 rounded-full bg-gray-500"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-500"></div>
+                <div className="w-2 h-2 rounded-full bg-white"></div>
+              </div>
             </div>
-            <div className="flex flex-col mb-5">
-                <label className="label" htmlFor="lastName">Last Name <span className="asterik">*</span></label>
-                <input type="text" name="lastName" className="input value w-full mt-2" id="lastName" placeholder="Last Name" required value={clearValue.lastName} onChange={(e)=>setClearValue({ ...clearValue, lastName: e.target.value })}/>
-                {state.errors && state.errors.lastName && (
-                    <p className="error-message">{state.errors.lastName}</p>
-                )}
-            </div>
-            <div className="flex flex-col mb-5">
-                <label className="label" htmlFor="email">Email <span className="asterik">*</span></label>
-                <input type="email" name="email" className="input value w-full mt-2" id="email" placeholder="Your Email" required value={clearValue.email} onChange={(e)=>setClearValue({ ...clearValue, email: e.target.value })}/>
+          </div>
+          <div className="absolute inset-0 z-0">
+            {backgroundImage && (
+              <Image 
+                src={backgroundImage} 
+                alt="Artistic background" 
+                fill 
+                className="object-cover" 
+                sizes="50vw"
+                priority 
+              />
+            )}
+          </div>
+        </motion.div>
+
+        {/* Registration Form Section
+         * Right side of the screen
+         * - Form fields with validation
+         * - Error messages
+         * - Success message
+         * - Animated transitions
+         */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 lg:p-16">
+          <div className="w-full max-w-md">
+            {/* Header Section */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8"
+            >
+              <h1 className="text-2xl font-medium mb-2">Create an Account</h1>
+              <p className="text-gray-400 text-sm">Sign up to get started with Sweepo</p>
+            </motion.div>
+
+            {/* Success Message */}
+            {state?.message && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 p-3 bg-[#2a2a2a] text-gray-300 text-sm rounded-md"
+              >
+                <p>{state.message}</p>
+                <Link href="/login" className="text-white hover:text-gray-300 underline transition-colors">
+                  Login here
+                </Link>
+              </motion.div>
+            )}
+
+            {/* Error Message */}
+            {state?.errors?.root && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 p-3 bg-[#2a2a2a] text-red-400 text-sm rounded-md"
+              >
+                <p>{state.errors.root}</p>
+              </motion.div>
+            )}
+
+            {/* Registration Form */}
+            <motion.form
+              variants={formVariants}
+              initial="hidden"
+              animate="visible"
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
+              {/* Name Fields */}
+              <div className="flex gap-4">
+                {/* First Name Field */}
+                <motion.div variants={itemVariants} className="space-y-2 flex-1">
+                  <label htmlFor="firstName" className="block text-sm text-gray-400">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                      <User className="h-4 w-4 text-gray-500" />
+                    </div>
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="bg-[#1a1a1a] border border-[#2a2a2a] text-white text-sm rounded-md block w-full pl-10 p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition-colors"
+                      placeholder="John"
+                      required
+                    />
+                  </div>
+                  {state.errors && state.errors.firstName && (
+                    <p className="text-xs text-red-400 mt-1">{state.errors.firstName}</p>
+                  )}
+                </motion.div>
+
+                {/* Last Name Field */}
+                <motion.div variants={itemVariants} className="space-y-2 flex-1">
+                  <label htmlFor="lastName" className="block text-sm text-gray-400">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                      <User className="h-4 w-4 text-gray-500" />
+                    </div>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      className="bg-[#1a1a1a] border border-[#2a2a2a] text-white text-sm rounded-md block w-full pl-10 p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition-colors"
+                      placeholder="Doe"
+                      required
+                    />
+                  </div>
+                  {state.errors && state.errors.lastName && (
+                    <p className="text-xs text-red-400 mt-1">{state.errors.lastName}</p>
+                  )}
+                </motion.div>
+              </div>
+
+              {/* Email Field */}
+              <motion.div variants={itemVariants} className="space-y-2">
+                <label htmlFor="email" className="block text-sm text-gray-400">
+                  Email Address <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <Mail className="h-4 w-4 text-gray-500" />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-[#1a1a1a] border border-[#2a2a2a] text-white text-sm rounded-md block w-full pl-10 p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition-colors"
+                    placeholder="name@company.com"
+                    required
+                  />
+                </div>
                 {state.errors && state.errors.email && (
-                    <p className="error-message">{state.errors.email}</p>
+                  <p className="text-xs text-red-400 mt-1">{state.errors.email}</p>
                 )}
-            </div>
-            <div className="flex flex-col mb-5 relative z-0">
-                <label className="label" htmlFor="password">Password <span className="asterik">*</span></label>
-                <div className="flex mt-2 relative">
-                <input type={togglePassword ?"text" :"password"} name="password" className="input value w-full pr-12" id="password" placeholder="Password" required value={clearValue.password} onChange={(e)=>setClearValue({ ...clearValue, password: e.target.value })}/>
-                <div className="flex justify-center items-center py-1 px-4 rounded-lg box-border  cursor-pointer absolute top-0 right-0 bottom-0" onClick={()=>setTogglePassword(!togglePassword)}>
-                    <FaEye className="value"/>
-                </div>
+              </motion.div>
+
+              {/* Password Fields */}
+              <motion.div variants={itemVariants} className="space-y-2">
+                <label htmlFor="password" className="block text-sm text-gray-400">
+                  Password <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <Lock className="h-4 w-4 text-gray-500" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="bg-[#1a1a1a] border border-[#2a2a2a] text-white text-sm rounded-md block w-full pl-10 pr-10 p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition-colors"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-white transition-colors"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
                 </div>
                 {state.errors && state.errors.password && (
-                    <p className="error-message">{state.errors.password}</p>
+                  <p className="text-xs text-red-400 mt-1">{state.errors.password}</p>
                 )}
-                
-            </div>
-            <div className="flex flex-col mb-5 relative w-full">
-                <label className="label" htmlFor="confirmPassword">Confirm Password <span className="asterik">*</span></label>
-                <div className="flex mt-2 relative">
-                    <input type={toggleConfirmPassword ?"text" :"password"} name="confirmPassword" className="input value w-full pr-12" id="confirmPassword" placeholder="Confirm Password" required value={clearValue.confirmPassword} onChange={(e)=>setClearValue({ ...clearValue, confirmPassword: e.target.value })}/>
-                    <div className="flex justify-center items-center py-1 px-4 rounded-lg box-border  cursor-pointer absolute top-0 right-0 bottom-0" onClick={()=>setToggleConfirmPasword(!toggleConfirmPassword)}>
-                    <FaEye className="value"/>
-                    </div>
-                </div>
-                    {state.errors && state.errors.confirmPassword && (
-                    <p className="error-message">{state.errors.confirmPassword}</p>
-                    )}
-            </div>
-            {/* <div>
-                <label className="label flex items-center gap-2">
-                    {isChecked ? (
-                        <IoCheckbox
-                            className="primary border-0 text-xl"
-                            onClick={handleCheckboxToggle}
-                        />
-                        ) : (
-                        <MdCheckBoxOutlineBlank
-                            className="primary border-0 text-xl"
-                            onClick={handleCheckboxToggle}
-                        />
-                    )}
-                    <input type="checkbox" hidden />
-                    Remember me
+              </motion.div>
+
+              {/* Confirm Password Field */}
+              <motion.div variants={itemVariants} className="space-y-2">
+                <label htmlFor="confirmPassword" className="block text-sm text-gray-400">
+                  Confirm Password <span className="text-red-500">*</span>
                 </label>
-            </div> */}
-            <button className="primaryBtn w-full mt-6" disabled={loading}>{loading ? "Processing...": "Register"}</button>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <Lock className="h-4 w-4 text-gray-500" />
+                  </div>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="bg-[#1a1a1a] border border-[#2a2a2a] text-white text-sm rounded-md block w-full pl-10 pr-10 p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition-colors"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-white transition-colors"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                {state.errors && state.errors.confirmPassword && (
+                  <p className="text-xs text-red-400 mt-1">{state.errors.confirmPassword}</p>
+                )}
+              </motion.div>
 
-            <p className="para text-sm mt-4 text-center">Do you have an account? <Link href={'/login'} className="heading font-bold">SignIn</Link></p>
-        </form>
-        <div className="relative hidden sm:block col-span-1 sm:col-span-3 h-full">
-        <Image src="/images/sideImage1.jpg" fill className="w-full h-full object-cover" alt="Side Image" priority />
-        {/* Text Overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-white px-4">
-        <h2 className="hidden sm:flex text-white text-center text-lg font-bold sm:text-2xl md:text-3xl">
-            The Ultimate AI-Powered Platform Built for Agencies.
-        </h2>
-        <p className="hidden sm:flex mt-4 text-center text-sm md:text-base lg:text-lg max-w-96 text-slate-200">
-            Sweepo empowers you to offer cutting-edge AI-driven analytics and predictive modeling as part of your service offerings. With Sweepo, agencies can help their clients chat with data, create live charts and graphs, and predict future trends with ease. Sign up now to experience how Sweepo can elevate your agency and drive new revenue opportunities.
-        </p>
-    </div>
+              {/* Terms Agreement */}
+              <motion.div variants={itemVariants} className="flex items-center">
+                <input
+                  id="terms"
+                  name="terms"
+                  type="checkbox"
+                  checked={agreeTerms}
+                  onChange={(e) => setAgreeTerms(e.target.checked)}
+                  className="w-4 h-4 bg-[#1a1a1a] border-[#2a2a2a] rounded focus:ring-0 focus:ring-offset-0"
+                  required
+                />
+                <label htmlFor="terms" className="ml-2 text-sm text-gray-400">
+                  I agree to the{' '}
+                  <Link href="/terms" className="text-white hover:underline">
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link href="/privacy" className="text-white hover:underline">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </motion.div>
+
+              {/* Submit Button */}
+              <motion.button
+                variants={itemVariants}
+                type="submit"
+                disabled={loading || !agreeTerms}
+                className={`w-full bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-1 focus:ring-[#3a3a3a] transition-colors ${
+                  (loading || !agreeTerms) ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                {loading ? 'Creating Account...' : 'Create Account'}
+              </motion.button>
+
+              {/* Login Link */}
+              <motion.p variants={itemVariants} className="text-sm text-center text-gray-400">
+                Already have an account?{' '}
+                <Link href="/login" className="text-white hover:text-gray-300 transition-colors">
+                  Sign in
+                </Link>
+              </motion.p>
+            </motion.form>
+          </div>
         </div>
-
-    </div>
-  )
+      </div>
+    </AdvancedPageTransition>
+  );
 }
-
-export default Register

@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
+import Loading from '@/components/Loading';
 
-const Loading: React.FC = () => {
+const LoadingPage: React.FC = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
-      <div className="w-12 h-12 border-4 border-gray-300 border-t-[#007185] rounded-full animate-spin"></div>
+      <Loading />
     </div>
   );
 };
 
-export default Loading;
+export default LoadingPage;

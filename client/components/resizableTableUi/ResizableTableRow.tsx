@@ -86,8 +86,8 @@ const ResizableTableRow = ({
                             />
 
                             { (editCell === key) && <span className='col-span-1 flex gap-1 w-10'>
-                                <IoCheckmarkSharp className='text-green-700 hover:text-green-400  cursor-pointer text-4xl font-bold max-w-5' />
-                                <IoClose  onClick={() => {setEditedRow(row); setEditCell("");}} className='text-red-700 hover:text-red-400 cursor-pointer text-4xl max-w-5' />
+                                <IoCheckmarkSharp className='text-green-500 hover:text-green-500  cursor-pointer text-4xl font-bold max-w-5' />
+                                <IoClose  onClick={() => {setEditedRow(row); setEditCell("");}} className='text-red-500 hover:text-red-400 cursor-pointer text-4xl max-w-5' />
                             </span>}
                         </div>
 

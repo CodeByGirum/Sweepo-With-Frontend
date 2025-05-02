@@ -78,7 +78,14 @@ const DefineSchema = ({
                                     <div>
                                         <label className='heading font-bold text-lg inline-block'>Tell us about the data <small className='para text-green-600'>(recommended)</small></label>
                                         <div className='mb-2'><small className='para'>Providing data details enhances error detection and cleaning.</small></div>
-                                        <textarea name='description' rows={5} placeholder='Explore more about the data purpose structure and benefits' className='w-full p-2 secondaryBg rounded-md focus:outline-none' value={awareness} onChange={(e)=>{setAwareness(e.target.value)}}>
+                                        <textarea 
+                                            name='description' 
+                                            rows={5} 
+                                            placeholder='Explore more about the data purpose structure and benefits' 
+                                            className='w-full p-2 secondaryBg rounded-md focus:outline-none' 
+                                            value={awareness} 
+                                            onChange={(e) => setAwareness(e.target.value)}
+                                        >
                                         </textarea>
                                     </div>
                                 )
@@ -93,12 +100,27 @@ const DefineSchema = ({
                         </div>
                         {/* Form Buttons */}
                         <div className='flex gap-3 justify-end items-center pr-3 pb-3 border-t pt-3 sectionBg sticky bottom-0 shadow'>
-                            <button className='secondaryBtn flex gap-3 items-center' onClick={()=>{setShowOverlay(false);setStep(1);}}>
+                            <button 
+                                type="button" 
+                                className='secondaryBtn flex gap-3 items-center' 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setShowOverlay(false);
+                                    setStep(1);
+                                }}
+                            >
                                 Cancel
                             </button>
                             {
                                 (step === 3) && (
-                                    <button type='submit' className='transparentBtn flex gap-3 items-center' onClick={()=>setStep(2)}>
+                                    <button 
+                                        type="button" 
+                                        className='transparentBtn flex gap-3 items-center' 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setStep(2);
+                                        }}
+                                    >
                                         Back
                                     </button>
                                 )
@@ -114,7 +136,15 @@ const DefineSchema = ({
                             }
                             {
                                 (step === 2) && (
-                                    <button className='primaryBtn flex gap-3 items-center' disabled={loading} onClick={()=>setStep(3)}>
+                                    <button 
+                                        type="button" 
+                                        className='primaryBtn flex gap-3 items-center' 
+                                        disabled={loading} 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setStep(3);
+                                        }}
+                                    >
                                         {loading && (
                                             <AiOutlineLoading3Quarters className='animate-spin text-xl' />
                                         )} Next

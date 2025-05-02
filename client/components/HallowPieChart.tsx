@@ -1,3 +1,13 @@
+/**
+ * Hallow Pie Chart Component
+ * Purpose: Displays overall data quality score in a donut chart format
+ * Used in: Data quality dashboard, quality metrics
+ * Features:
+ * - Donut chart visualization
+ * - Central quality score display
+ * - Interactive tooltips
+ * - Responsive design
+ */
 
 "use client";
 
@@ -12,15 +22,19 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-
+/**
+ * Hallow pie chart component for displaying overall data quality score
+ * @param overallQualityPercentage - Overall data quality percentage (0-100)
+ */
 function HallowPieChartComponent({ overallQualityPercentage }: { overallQualityPercentage: number }) {
   
-  
+  // Prepare chart data
   const chartData = [
     { browser: "quality", visitors: overallQualityPercentage, fill: "#30D158" },
     { browser: "problem", visitors: (100 - overallQualityPercentage), fill: "#2C2C2E" },
   ];
   
+  // Chart configuration
   const chartConfig = {
     quality: {
       label: "quality",

@@ -30,7 +30,7 @@ const ProjectCard = ({
     <div className='secondaryBg col-span-6 md:col-span-3 lg:col-span-2 px-4 py-6 rounded-lg'>
         <div className='flex gap-3 items-center justify-between mb-3'>
             <h1 className='heading text-2xl font-bold inline-block mb-2 truncate w-full hover:underline'>
-              <Link href={`/cleandata/${file_id}`} target='_blank' >{original_name}</Link>
+              <Link href={`/errordetection/${file_id}`} target='_blank' >{original_name}</Link>
             </h1>
             {
                 (category === "Machine Learning" && <FaGear title='Machine learning' />) ||

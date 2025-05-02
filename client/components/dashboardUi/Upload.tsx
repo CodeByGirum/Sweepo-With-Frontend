@@ -224,7 +224,15 @@ const Upload = ({setShowOverlay, setRevalidateProjects,revalidateProjects, setSt
                             )
                         }
                     </ul>
-                    <input type='text' className='hidden' name='category' id='category' value={category} />
+                    <input 
+                        type='text' 
+                        className='hidden' 
+                        name='category' 
+                        id='category' 
+                        value={category} 
+                        onChange={(e) => setCategory(e.target.value)}
+                        readOnly 
+                    />
                     {state.errors && state.errors.category && (
                         <p className="error-message mb-2">{state.errors.category}</p>
                     )}
@@ -232,7 +240,14 @@ const Upload = ({setShowOverlay, setRevalidateProjects,revalidateProjects, setSt
                 <div className='col-span-2 sm:col-span-1 z-10'>
                     <div>
                         <label className='heading font-bold text-lg inline-block mb-2'>Project Description</label>
-                        <textarea name='description' rows={2} placeholder='Enter project description' className='w-full inputBg p-2 rounded-md' value={desc} onChange={(e)=>{setDesc(e.target.value)}}>
+                        <textarea 
+                            name='description' 
+                            rows={2} 
+                            placeholder='Enter project description' 
+                            className='w-full inputBg p-2 rounded-md' 
+                            value={desc} 
+                            onChange={(e) => setDesc(e.target.value)}
+                        >
                         </textarea>
                         {state.errors && state.errors.description && (
                             <p className="error-message mb-2">{state.errors.description}</p>
@@ -255,7 +270,11 @@ const Upload = ({setShowOverlay, setRevalidateProjects,revalidateProjects, setSt
 
                 <div  className='w-full flex gap-3 justify-end items-center pr-3 border-t pt-3 sticky bottom-0 shadow col-span-2 z-0'>
             
-                    <button className='secondaryBtn' onClick={()=>{setShowOverlay(false);setStep(1)}}>Cancel</button>
+                    <button type="button" className='secondaryBtn' onClick={(e) => {
+                        e.preventDefault();
+                        setShowOverlay(false);
+                        setStep(1);
+                    }}>Cancel</button>
                     <button type='submit' className='primaryBtn flex gap-3 items-center' disabled={loading}>
                         {loading ? (
                             <AiOutlineLoading3Quarters className='animate-spin text-xl' />

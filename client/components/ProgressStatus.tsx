@@ -1,5 +1,19 @@
+/**
+ * Progress Status Component
+ * Purpose: Displays project progress status with visual indicators
+ * Used in: Project cards, project details
+ * Features:
+ * - Progress-based status determination
+ * - Visual status indicators
+ * - Status text display
+ */
+
 import React from 'react'
 
+/**
+ * Progress status component that shows project status based on progress percentage
+ * @param progress - Progress percentage (0-100)
+ */
 const ProgressStatus = ({progress}:{progress:number}) => {
     
     let progressStatus = '';

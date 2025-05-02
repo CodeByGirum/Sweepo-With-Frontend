@@ -15,12 +15,13 @@ const COLORS = {INVALID_VALUE:"#FF5733",TYPE_MISMATCH:"#FFC300",NULL_VALUE:"#36A
 
 
 const CleanDataTableHeader = ({expand,setExpand}:{expand:boolean,setExpand:React.Dispatch<React.SetStateAction<boolean>>}) => {
-    const [row, setRow] = useState<number | string>(50)
+    const [row, setRow] = useState<string>("50")
 
     const handlePagination = (increase: boolean) => {
         setRow(prev => {
-            const newValue = increase ? Number(prev) + 50 : Number(prev) - 50;
-            return newValue < 0 ? 0 : newValue;
+            const currentValue = Number(prev);
+            const newValue = increase ? currentValue + 50 : currentValue - 50;
+            return newValue < 0 ? "0" : String(newValue);
         });
     };
     

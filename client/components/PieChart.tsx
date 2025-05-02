@@ -1,3 +1,14 @@
+/**
+ * Pie Chart Component
+ * Purpose: Visualizes data quality issues distribution
+ * Used in: Data quality dashboard, issue analysis
+ * Features:
+ * - Interactive pie chart
+ * - Custom legend
+ * - Value labels
+ * - Tooltip support
+ */
+
 "use client";
 
 import { DefaultLegendContentProps, LabelList, Legend, Pie, PieChart } from "recharts";
@@ -10,17 +21,23 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
+/**
+ * Color mapping for different issue types
+ */
 const COLORS = {INVALID_VALUE:"#FF5733",TYPE_MISMATCH:"#FFC300",NULL_VALUE:"#36A2EB",DUPLICATE_VALUE:"#4CAF50",INVALID_FORMAT:"#9C27B0",INVALID_SEPARATOR:"#FF9800",INVALID_DATE: "#E53935"}
 
 type IssueType = keyof typeof COLORS;
 
+/**
+ * Pie chart component for displaying issue distribution
+ * @param issueTypeCounts - Array of issue counts by type
+ */
 function PieChartComponent({ issueTypeCounts }: { issueTypeCounts: IssueCountType[] }) {
   // Map data correctly for recharts
   const IssueDistribution = issueTypeCounts.map((issue) => ({
     name: issue.issueType, 
     value: issue.totalCount, 
     fill: COLORS[issue.issueType as IssueType], 
-
   }));
 
   const chartConfig = IssueDistribution.reduce((config, issue) => {
@@ -31,7 +48,10 @@ function PieChartComponent({ issueTypeCounts }: { issueTypeCounts: IssueCountTyp
     return config;
   }, {} as ChartConfig);
 
-  // Custom legend
+  /**
+   * Custom legend renderer
+   * @param props - Legend properties from recharts
+   */
   const renderLegend = (props: DefaultLegendContentProps) => {
     const { payload } = props;
     return (

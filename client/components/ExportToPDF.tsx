@@ -1,3 +1,14 @@
+/**
+ * Export To PDF Component
+ * Purpose: Converts HTML content to PDF format
+ * Used in: Report exports, data analysis exports
+ * Features:
+ * - HTML to PDF conversion
+ * - Customizable file name
+ * - Element filtering
+ * - High-quality output
+ */
+
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { DropdownMenuItem } from './ui/dropdown-menu';
@@ -7,7 +18,18 @@ interface ExportToPDFProps {
   fileName?: string; 
 }
 
+/**
+ * PDF export component
+ * @param exportContentId - ID of the HTML element to export
+ * @param fileName - Optional custom file name for the PDF
+ */
 const ExportToPDF: React.FC<ExportToPDFProps> = ({ exportContentId, fileName }) => {
+  /**
+   * Handles the PDF export process
+   * - Captures HTML content
+   * - Converts to canvas
+   * - Creates and saves PDF
+   */
   const handleExport = async () => {
     const content = document.getElementById(exportContentId);
 
