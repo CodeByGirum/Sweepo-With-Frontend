@@ -25,4 +25,4 @@ Feel free to submit pull requests or open issues if you have suggestions for imp
 
 ## License
 
-[Your license information] 
+[Your license information]
