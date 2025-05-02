@@ -132,6 +132,8 @@ export const fillWithMedian = (modifiedData, action) => {
 }
 
 export const fillWithUpperOrLowerRow = (modifiedData, issuesMap ,action) => {
+    console.log("action In function", action);
+    
     modifiedData = modifiedData.map((record, index, arr) => {
         const originalRowIndex = index + 1;
         const rowIssues = issuesMap[originalRowIndex] || [];

@@ -1,3 +1,15 @@
+/**
+ * Authentication Actions
+ * Purpose: Handles user authentication and authorization operations
+ * Used in: User registration, login, logout
+ * Features:
+ * - User registration with validation
+ * - Login with token management
+ * - Logout functionality
+ * - Password validation
+ * - Cookie management
+ */
+
 'use server'
 
 import {axiosPrivate} from "../services/axios.js"
@@ -6,11 +18,20 @@ import { cookies } from 'next/headers';
 
 import { z } from "zod";
 
+/**
+ * Response type for registration operations
+ */
 type RegisterResponse = {
     message: string;
     errors?: Record<string, string[] | undefined>,
 };
 
+/**
+ * Creates a new user with validation
+ * @param state - Current registration state
+ * @param formData - Form data containing user details
+ * @returns Promise resolving to registration response
+ */
 export const createUser = async (
   state: { message: string | null, errors?: Record<string, string[] | undefined> },
   formData: FormData
@@ -98,6 +119,9 @@ export const createUser = async (
     }
 };
 
+/**
+ * Interface for user payload
+ */
 interface Payload {
     userId: string;
     email: string;
@@ -105,6 +129,9 @@ interface Payload {
     lastName: string;
 }
 
+/**
+ * Response type for login operations
+ */
 type LoginResponse = {
     message: string,
     errors?: Record<string, string[] | undefined>,
@@ -114,6 +141,12 @@ type LoginResponse = {
     payload?:Payload
 };
 
+/**
+ * Authenticates a user and manages login state
+ * @param state - Current login state
+ * @param formData - Form data containing login credentials
+ * @returns Promise resolving to login response
+ */
 export const login =  async(
     state:{
         message: string | null, 
@@ -202,6 +235,10 @@ export const login =  async(
     }
 }
 
+/**
+ * Logs out the current user
+ * @returns Promise resolving to logout response
+ */
 export const logout = async (): Promise<{ message: string }> => {
     const cookieStore = await cookies();
 

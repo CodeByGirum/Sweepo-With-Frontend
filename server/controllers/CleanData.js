@@ -9,6 +9,14 @@ import {
     response_format, 
     temperature, 
     top_p } from "../openAI/chat.js";
+import { 
+    summary_frequency_penalty, 
+    summary_max_completion_tokens, 
+    summary_messages, 
+    summary_presence_penalty, 
+    summary_response_format, 
+    summary_temperature, 
+    summary_top_p } from "../openAI/summaryprompt.js";
 import openai from "../config/openaiConfig.js";
 import {BadRequestError, NotFoundError} from "../errors/index.js";
 import { validateParsedData } from "../utils/validateParsedData.js";
@@ -113,11 +121,41 @@ export const CleanData = async (req, res) => {
 
         // Extract actions
         aiResponse = parsedResponse?.actions;
-        aiSummary = parsedResponse?.summary;
 
         console.log("Before AI actions inserted successfully. ",aiResponse);
 
-        if ((aiResponse && aiResponse.length > 0 && aiResponse[0].title && aiResponse[0].title !== "")) {
+        if ((aiResponse && aiResponse.length > 0 && aiResponse[0].title && aiResponse[0].title !== "" )) {
+
+            // if(){
+
+            // }
+
+            const openAiSummaryPayload = {
+                model: "gpt-4o-mini",
+                messages: await summary_messages(chat, fetchSchema[0].schema_definition, issues),
+                max_tokens: summary_max_completion_tokens,
+                temperature: summary_temperature,
+                top_p: summary_top_p,
+                frequency_penalty: summary_frequency_penalty,
+                presence_penalty: summary_presence_penalty,
+                response_format: summary_response_format,
+            };
+            
+             // Send request to OpenAI
+            const response = await openai.chat.completions.create(openAiSummaryPayload);
+    
+            const finalSummaryResponse = response.choices?.[0]?.message?.content;
+    
+            // Parse JSON if needed
+            let parsedSummaryResponse;
+            try {
+                parsedSummaryResponse = typeof finalSummaryResponse === "string" ? JSON.parse(finalSummaryResponse) : finalSummaryResponse;
+            } catch (error) {
+                console.error("Error parsing response JSON:", error);
+            }
+            aiSummary = parsedSummaryResponse?.summary;
+
+            console.log("AI summary inserted successfully for second. ",aiSummary);
 
             for (const action of aiResponse) {
                 const existingAction = await queryDb(
@@ -136,7 +174,6 @@ export const CleanData = async (req, res) => {
             }
         
             console.log("AI actions inserted successfully. ",aiResponse);
-            console.log("AI summary inserted successfully. ",aiSummary);
             
         }else{
 

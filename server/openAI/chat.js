@@ -1,5 +1,8 @@
 // , contextDesc
 // A concise response for the user.
+
+// If user send greetings or something like starting communications, suggest the user that what he will do with the data and what you can do for him. How the user utilize the data and what you can do for him. and assing any greeting and communiction those won't related with the actions to SUGGESTION type no column no other properties in the object only {type:"SUGGESTION", title:"", "response:""}.
+
 export const messages = async (userInput, schema, issues) => {
   const systemPrompt = `
   You are a data transformation assistant. The user will provide a natural language command related to modifying a dataset.
@@ -80,8 +83,9 @@ export const messages = async (userInput, schema, issues) => {
   - response: Elaborate widely in deep and detail even more the action completed for the user. If possible male it more user friendly and easy to understand. If possible make it morethan 200 characters.
   - summary: Do not include this in each action. The summary must be provided **once**, separated from the list of actions. It should describe the overall effect of the actions generated in response to the user input. The summary should not be tied to a single action, but to the totality of changes the user asked for. Ensure it is present once and only once at the end of the entire response object.
   - If user uses greetings or something like starting communications, suggest the user that what he will do with the data and what you can do for him without creating any type.
-
   - for number never include quotes for value
+  - don't omit issueType, newValue, oldValue, rowNumber, newValues, value, minValue, maxValue, count, findText, replaceText, newFormat, transform, dataType, extractWord, columnName, idType, encoding, character in the response unless it is not applicable for the action.
+  - issueType is must for the action of REMOVE_ROWS_WITH_ISSUES, REPLACE_ISSUE_WITH_VALUE, FILL_WITH_AVERAGE, FILL_WITH_MEAN, FILL_WITH_MODE, FILL_WITH_MEDIAN, FILL_WITH_UPPER_ROW, FILL_WITH_LOWER_ROW, FILL_WITH_RANDOM.
 
 
       **Important Note:** 
@@ -96,8 +100,6 @@ export const messages = async (userInput, schema, issues) => {
     9. Don't split single response into multiple responses unless it is distinct response. 
     10. the user may mention a number of decimal places (like "round to 2 decimal places"). Extract this value dynamically.
     11. When the user specifies the decimal places, use this value in the response (e.g., by: 2 for "round to 2 decimal places").
-
-    If user send greetings or something like starting communications, suggest the user that what he will do with the data and what you can do for him.
 
     List of acceptable issue types:
   - "NULL_VALUE", "DUPLICATE_VALUE", "TYPE_MISMATCH", "INVALID_VALUE", "INVALID_FORMAT", "INVALID_SEPARATOR", "INVALID_DATE".
@@ -199,7 +201,7 @@ export const response_format = {
               },
               column: { type: "string", nullable: true },
               defaultValue: { type: ["string", "number"], nullable: true },
-              issueType: { type: "string", nullable: true },
+              issueType: { type: "string", nullable: true, enum: ["NULL_VALUE", "DUPLICATE_VALUE", "TYPE_MISMATCH", "INVALID_VALUE", "INVALID_FORMAT", "INVALID_SEPARATOR", "INVALID_DATE"] },
               newValue: { type: ["string", "number"], nullable: true },
               oldValue: { type: ["string", "number"], nullable: true },
               rowNumber: { type: "number", nullable: true },

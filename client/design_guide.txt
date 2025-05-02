@@ -1,0 +1,456 @@
+### Sweepo Dashboard Style Guide
+
+## Overview
+
+Sweepo Dashboard features a modern, dark-themed interface designed for data professionals. The design system emphasizes readability, clean information hierarchy, and subtle animations to create a professional and focused user experience.
+
+## Typography
+
+### Font Family
+
+- **Primary Font**: Inter (Google Font)
+
+- Applied via Next.js font optimization: `import { Inter } from 'next/font/google'`
+- Used with Latin subset for performance: `Inter({ subsets: ["latin"] })`
+- Applied globally to the body element
+
+
+
+
+
+### Font Sizes
+
+- **Headers**:
+
+- Page titles: `text-2xl` (1.5rem)
+- Section headers: `text-lg` (1.125rem)
+- Card titles: `text-sm` (0.875rem)
+
+
+
+- **Body Text**:
+
+- Primary text: `text-sm` (0.875rem)
+- Secondary text: `text-xs` (0.75rem)
+- Metadata: `text-xs` (0.75rem)
+
+
+
+
+
+### Font Weights
+
+- **Regular**: `font-normal` - Used for most body text
+- **Medium**: `font-medium` - Used for headers and emphasis
+- **Bold**: Not commonly used except for special emphasis
+
+
+## Color Palette
+
+### Background Colors
+
+- **Primary Background**: `bg-[#121212]` - Main application background
+- **Secondary Background**: `bg-[#1a1a1a]` - Card backgrounds, form fields
+- **Tertiary Background**: `bg-[#1e1e1e]` - Alternative card backgrounds
+- **Accent Background**: `bg-[#2a2a2a]` - Buttons, active states, borders
+
+
+### Text Colors
+
+- **Primary Text**: `text-white` - Main text color
+- **Secondary Text**: `text-gray-400` - Less important text, labels
+- **Tertiary Text**: `text-gray-500` - Metadata, timestamps
+- **Accent Text**: Various colors for specific states (blue, green, yellow)
+
+
+### Border Colors
+
+- **Primary Border**: `border-[#2a2a2a]` - Used for most dividers and borders
+
+
+### Status Colors
+
+- **Blue**: `bg-blue-500` - Used for in-progress items
+- **Green**: `bg-green-500` - Used for completed items
+- **Yellow**: `bg-yellow-500` - Used for planning items
+- **Red**: `bg-red-500` - Used for alerts and errors
+
+
+## Layout Structure
+
+### Page Layout
+
+- **Container**: Flex column layout with min-height of screen
+
+```css
+flex flex-col min-h-screen
+```
+
+
+- **Header**: Fixed height with border bottom
+- **Main Content**: Flex-1 to take remaining space
+- **Footer**: Auto height with border top
+
+
+### Grid System
+
+- Uses Tailwind's grid system for responsive layouts
+- Common patterns:
+
+- `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4`
+- `grid grid-cols-4 gap-6`
+
+
+
+
+
+### Spacing
+
+- Consistent spacing using Tailwind's spacing scale
+- Common values:
+
+- Page padding: `p-6` or `p-8`
+- Section margins: `mb-6`
+- Card padding: `p-4`
+- Item spacing: `gap-2`, `gap-4`, `gap-6`
+
+
+
+
+
+## Component Styling
+
+### Cards
+
+- Subtle background with border
+
+```css
+bg-[#1e1e1e] border border-[#2a2a2a] rounded-md
+```
+
+
+- Hover effects for interactive cards
+
+```css
+hover:border-gray-500 transition-all hover:translate-y-[-2px] hover:shadow-lg
+```
+
+
+- Card headers with border bottom
+
+```css
+border-b border-[#2a2a2a] p-4
+```
+
+
+
+
+### Headers
+
+- Main application header
+
+```css
+border-b border-[#2a2a2a] px-8 py-4 flex justify-between items-center
+```
+
+
+- Section headers
+
+```css
+text-xs uppercase text-gray-500 font-medium mb-2
+```
+
+
+- Card headers
+
+```css
+flex justify-between items-center mb-2
+```
+
+
+
+
+### Footers
+
+- Application footer
+
+```css
+border-t border-[#2a2a2a] py-3 px-8
+```
+
+
+- Two variants:
+
+- Full footer with multiple sections
+- Minimal footer with just copyright and essential links
+
+
+
+
+
+### Navigation
+
+- Horizontal navigation in header
+
+```css
+flex items-center gap-4
+```
+
+
+- Sidebar navigation
+
+```css
+space-y-1 flex flex-col
+```
+
+
+- Mobile navigation (collapsible)
+
+
+### Buttons
+
+- Primary buttons
+
+```css
+bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md py-1.5 px-3 text-xs font-medium transition-colors
+```
+
+
+- Icon buttons
+
+```css
+bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md p-1.5 transition-colors
+```
+
+
+- Text buttons
+
+```css
+text-gray-400 hover:text-white text-xs transition-colors
+```
+
+
+
+
+### Form Elements
+
+- Input fields
+
+```css
+bg-[#1a1a1a] border border-[#2a2a2a] rounded-md py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-1 focus:ring-gray-500 transition-all
+```
+
+
+- Checkboxes
+
+```css
+bg-[#1a1a1a] border-[#2a2a2a] rounded focus:ring-0 focus:ring-offset-0 transition-colors
+```
+
+
+- Labels
+
+```css
+block text-sm text-gray-400
+```
+
+
+
+
+## Animations and Transitions
+
+### Page Transitions
+
+- Implemented using Framer Motion
+- Multiple transition types available:
+
+- Fade, Slide, Scale, Flip, Rotate, Perspective
+
+
+
+- Customizable duration and delay
+
+
+### Micro-interactions
+
+- Button hover/tap animations
+
+```css
+whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+```
+
+
+- Form field focus transitions
+
+```css
+transition-colors focus:ring-1 focus:ring-gray-500
+```
+
+
+- Card hover effects
+
+```css
+transition-all hover:translate-y-[-2px] hover:shadow-lg
+```
+
+
+
+
+### Loading Animations
+
+- Staggered animations for lists
+
+```javascript
+transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+```
+
+
+- Fade-in animations for new content
+
+```css
+initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+```
+
+
+
+
+## Responsive Design
+
+### Breakpoints
+
+- Following Tailwind's default breakpoints:
+
+- `sm`: 640px
+- `md`: 768px
+- `lg`: 1024px
+- `xl`: 1280px
+- `2xl`: 1536px
+
+
+
+
+
+### Mobile Adaptations
+
+- Single column layouts on mobile
+- Collapsible sidebar and navigation
+- Adjusted spacing and font sizes
+- Hidden elements that reappear at larger breakpoints
+
+
+### Desktop Optimizations
+
+- Multi-column layouts
+- Side-by-side content
+- Expanded navigation
+- Hover effects
+
+
+## UI Elements
+
+### Tables
+
+- Clean, borderless design with hover states
+- Header styling:
+
+```css
+bg-[#1a1a1a] px-4 py-2 text-left font-medium text-gray-400 border-b border-[#2a2a2a]
+```
+
+
+- Row styling:
+
+```css
+border-b border-[#2a2a2a] hover:bg-[#1a1a1a] transition-colors
+```
+
+
+
+
+### Progress Bars
+
+- Simple, clean design
+
+```css
+h-1.5 w-full bg-[#2a2a2a] rounded-full
+```
+
+
+- Colored indicators
+
+```css
+h-1.5 bg-blue-500 rounded-full transition-all
+```
+
+
+
+
+### Icons
+
+- Using Lucide React icons
+- Consistent sizing: `h-3.5 w-3.5` or `h-4 w-4`
+- Color matching text: `text-gray-400`, `text-white`
+
+
+### Badges and Tags
+
+- Simple, pill-shaped design
+
+```css
+bg-[#2a2a2a] text-xs px-2 py-0.5 rounded transition-colors hover:bg-[#3a3a3a]
+```
+
+
+- Color variations for status
+
+
+## Design Philosophy
+
+### Aesthetic
+
+- **Dark Mode First**: Designed primarily for dark mode to reduce eye strain
+- **Minimalist**: Clean, uncluttered interfaces with focused content
+- **Professional**: Business-oriented design language
+- **Subtle Depth**: Light use of shadows and transforms for depth
+
+
+### Interaction Principles
+
+- **Responsive Feedback**: Visual feedback for all interactions
+- **Progressive Disclosure**: Complex features revealed progressively
+- **Consistent Patterns**: Similar interactions work the same way throughout
+- **Forgiving Design**: Easy to undo actions and recover from mistakes
+
+
+### Accessibility Considerations
+
+- Sufficient color contrast for readability
+- Focus states for keyboard navigation
+- Text alternatives for visual elements
+- Responsive design for various devices
+
+
+## Implementation Details
+
+### CSS Framework
+
+- Tailwind CSS for utility-based styling
+- Custom CSS for animations and special effects
+
+
+### Component Architecture
+
+- React components with consistent props patterns
+- Composition over inheritance
+- Reusable UI components in `/components/ui`
+- Page-specific components in page directories
+
+
+### State Management
+
+- React hooks for local state
+- Context API for theme and global settings
+- Props for component-specific configuration
+
+
+This style guide serves as a reference for maintaining design consistency across the Sweepo Dashboard application. When extending the application with new features, refer to these patterns to ensure a cohesive user experience.

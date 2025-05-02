@@ -150,7 +150,6 @@ export const multiplicationMultipleColumn = (modifiedData, action) => {
     return modifiedData;
 }
 
-
 export const divideMultipleColumn = (modifiedData, action) => {
     modifiedData = modifiedData.map(record => {
         const quotient = action.targetColumn.reduce((acc, col, index) => {
