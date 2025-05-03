@@ -22,7 +22,9 @@ import {
   ChevronDown,
   BarChart3,
   PieChart,
-  Database
+  Database,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react"
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -48,6 +50,7 @@ import {
 import { DeleteConfirmationDialog } from "@/components/DeleteConfirmationDialog"
 import { DeleteFile } from "@/utils/fileActions"
 import { useRouter } from "next/navigation"
+import { TeamCollaborationCard } from "@/components/TeamCollaboration"
 
 const DatasetDetails = ({params}:Props) => {
   
@@ -502,6 +505,9 @@ const DatasetDetails = ({params}:Props) => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Team Collaboration Card */}
+              <TeamCollaborationCard projectId={fileId} />
             </div>
           </div>
         )}
