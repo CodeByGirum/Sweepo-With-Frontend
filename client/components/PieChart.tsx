@@ -22,9 +22,17 @@ import {
 } from "@/components/ui/chart";
 
 /**
- * Color mapping for different issue types
+ * Color mapping for different issue types (now in grayscale)
  */
-const COLORS = {INVALID_VALUE:"#FF5733",TYPE_MISMATCH:"#FFC300",NULL_VALUE:"#36A2EB",DUPLICATE_VALUE:"#4CAF50",INVALID_FORMAT:"#9C27B0",INVALID_SEPARATOR:"#FF9800",INVALID_DATE: "#E53935"}
+const COLORS = {
+  INVALID_VALUE: "#ffffff",      // White
+  TYPE_MISMATCH: "#e0e0e0",      // Light gray
+  NULL_VALUE: "#c0c0c0",         // Silver
+  DUPLICATE_VALUE: "#a0a0a0",    // Medium gray
+  INVALID_FORMAT: "#808080",     // Gray
+  INVALID_SEPARATOR: "#606060",  // Dark gray
+  INVALID_DATE: "#404040"        // Very dark gray
+}
 
 type IssueType = keyof typeof COLORS;
 
@@ -59,7 +67,7 @@ function PieChartComponent({ issueTypeCounts }: { issueTypeCounts: IssueCountTyp
         {payload?.map((entry, index) => (
           <li key={`legend-${index}`} className="flex items-center gap-2">
             <span
-              className="w-3 h-3 rounded-full inline-block"
+              className="w-3 h-3 rounded-full inline-block border border-black"
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-xs text-white">{entry.value}</span>
@@ -82,13 +90,21 @@ function PieChartComponent({ issueTypeCounts }: { issueTypeCounts: IssueCountTyp
         >
           <PieChart className="w-full">
             <ChartTooltip content={<ChartTooltipContent nameKey="name" hideLabel />} />
-            <Pie data={IssueDistribution} dataKey="value" nameKey="name" className="w-full">
+            <Pie 
+              data={IssueDistribution} 
+              dataKey="value" 
+              nameKey="name" 
+              className="w-full"
+              stroke="#000000"
+              strokeWidth={1}
+              cornerRadius={4}
+            >
               <LabelList
                 dataKey="value"
                 position="inside"
                 fill="black"
                 stroke="white"
-                strokeWidth={0}
+                strokeWidth={0.5}
                 fontSize={12}
                 fontWeight="bold"
               />

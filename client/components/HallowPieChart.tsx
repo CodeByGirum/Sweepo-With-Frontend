@@ -30,19 +30,19 @@ function HallowPieChartComponent({ overallQualityPercentage }: { overallQualityP
   
   // Prepare chart data
   const chartData = [
-    { browser: "quality", visitors: overallQualityPercentage, fill: "#30D158" },
-    { browser: "problem", visitors: (100 - overallQualityPercentage), fill: "#2C2C2E" },
+    { browser: "quality", visitors: overallQualityPercentage, fill: "#ffffff" },
+    { browser: "problem", visitors: (100 - overallQualityPercentage), fill: "#333333" },
   ];
   
   // Chart configuration
   const chartConfig = {
     quality: {
       label: "quality",
-      color: "#30D158",
+      color: "#ffffff",
     },
     problem: {
       label: "problem",
-      color: "var(--color-safari)",
+      color: "#333333",
     },
   } satisfies ChartConfig;
 
@@ -60,7 +60,9 @@ function HallowPieChartComponent({ overallQualityPercentage }: { overallQualityP
               dataKey="visitors"
               nameKey="browser"
               innerRadius={60}
-              strokeWidth={5}
+              strokeWidth={2}
+              stroke="#000000"
+              cornerRadius={8}
             >
               <Label
                 content={({ viewBox }) => {

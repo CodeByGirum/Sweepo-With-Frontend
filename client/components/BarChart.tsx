@@ -45,16 +45,21 @@ function BarChartComponent({ columnIssueCounts }: { columnIssueCounts: ColumnIss
               left: 12,
               right: 12,
             }}
+            barSize={30}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={false} stroke="#333333" strokeDasharray="3 3" />
             <XAxis
               dataKey="column"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
+              stroke="#ffffff"
             />
-            <YAxis />
+            <YAxis 
+              stroke="#ffffff"
+              tickLine={false}
+            />
             <ChartTooltip
               content={
                 <ChartTooltipContent
@@ -65,7 +70,13 @@ function BarChartComponent({ columnIssueCounts }: { columnIssueCounts: ColumnIss
               }
             />
           
-            <Bar dataKey="totalIssues" fill="hsl(var(--chart-1))" />
+            <Bar 
+              dataKey="totalIssues" 
+              fill="#ffffff" 
+              stroke="#000000"
+              strokeWidth={1}
+              radius={[10, 10, 0, 0]}
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>
