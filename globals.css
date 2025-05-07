@@ -1,0 +1,73 @@
+/* Add these custom scrollbar styles for tables */
+
+/* Custom scrollbar styling */
+.scrollbar-themed {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--scrollbar-color, #000000) #1a1a1a !important;
+}
+
+/* For Webkit browsers (Chrome, Safari) */
+.scrollbar-themed::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.scrollbar-themed::-webkit-scrollbar-track {
+  background: #1a1a1a !important;
+  border-radius: 0 !important;
+}
+
+.scrollbar-themed::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-color, #000000) !important;
+  border-radius: 0 !important;
+}
+
+.scrollbar-themed::-webkit-scrollbar-thumb:hover {
+  background: #111111 !important;
+}
+
+.scrollbar-themed::-webkit-scrollbar-corner {
+  background: #1a1a1a !important;
+}
+
+/* Ensure scrollbars appear consistently */
+.overflow-auto,
+.overflow-x-auto,
+.overflow-y-auto {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--scrollbar-color, #000000) #1a1a1a !important;
+}
+
+/* For Webkit browsers (Chrome, Safari) */
+.overflow-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.overflow-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #1a1a1a !important;
+  border-radius: 0 !important;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-color, #000000) !important;
+  border-radius: 0 !important;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #111111 !important;
+}
+
+.overflow-auto::-webkit-scrollbar-corner,
+.overflow-x-auto::-webkit-scrollbar-corner,
+.overflow-y-auto::-webkit-scrollbar-corner {
+  background: #1a1a1a !important;
+} 
